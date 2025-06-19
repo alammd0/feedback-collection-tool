@@ -9,6 +9,8 @@ export const middleware = async (req: Request, res: Response, next: NextFunction
       req.header("Authorization")?.replace("Bearer ", "") ||
       req.cookies?.token;
 
+    // console.log("token is missing", token);
+
     if (!token) {
       return res.status(401).json({
         status: false,
