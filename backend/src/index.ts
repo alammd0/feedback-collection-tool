@@ -5,6 +5,7 @@ import cors from "cors";
 import "dotenv/config";
 import adminRoutes from "./routes/adminRoutes";
 import productRoutes from "./routes/productRoute";
+import feedbackRoutes from "./routes/feedbackRoutes";
 
 const app = express();
 const server = http.createServer(app);
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/feedback", feedbackRoutes);
 
 
 io.on("connection", (socket) => {
@@ -33,6 +35,10 @@ io.on("connection", (socket) => {
 });
 
 export { io }
+
+app.get("/", (req, res) => {
+  res.send(`<h1>App Successfully Published </h1>`)
+})
 
 // Start server
 const PORT = process.env.PORT || 4000;
