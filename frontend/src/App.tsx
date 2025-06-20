@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { NavbarComponets } from "./component/Navbar";
 import { FeedbackFrom } from "./page/FeedbackFrom";
+import { LoginPage } from "./page/login";
+import { ForgetPasswordPage } from "./page/ForgePassword";
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<FeedbackFrom />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/forget-password" element={<ForgetPasswordPage />}></Route>
         </Routes>
       </main>
     </div>

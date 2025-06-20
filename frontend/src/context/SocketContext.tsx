@@ -1,29 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+// context/SocketContext.tsx
+import { createContext, useContext} from "react";
 import type { ReactNode } from "react";
-import { BACKEND_URL } from "../service/backendURL";
+import { socket } from "../utils/socket"; // Your socket.io-client instance
+import type { Socket } from "socket.io-client";
 
-export const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext<Socket | null>(null);
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  useEffect(() => {
-    const newSocket = io(BACKEND_URL); 
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
-
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={socket}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 
 export const useSocket = () => {
   const context = useContext(SocketContext);
-  if (!context) throw new Error("useSocket must be used within SocketProvider");
+  if (!context) {
+    throw new Error("useSocket must be used within SocketProvider");
+  }
   return context;
 };

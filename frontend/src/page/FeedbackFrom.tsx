@@ -3,6 +3,8 @@ import { getAllProduct } from "../service/opreations/productAPIContect";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
+import { toast } from "react-toastify";
+import { submitFeedBack } from "../service/opreations/feedbackAPIContect";
 import { useSocket } from "../context/SocketContext";
 
 interface formData {
@@ -22,7 +24,7 @@ export const FeedbackFrom = () => {
   const [product, setProduct] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
-//   const socket = useSocket();
+  const socket = useSocket();
 
   const [from, setFrom] = useState<formData>({
     productId: "",
@@ -37,6 +39,7 @@ export const FeedbackFrom = () => {
       setLoading(true);
       try {
         const response = await getAllProduct();
+        console.log(response);
 
         if (response) {
           setProduct(response.data.data);
@@ -58,23 +61,46 @@ export const FeedbackFrom = () => {
     >
   ) => {
     e.preventDefault();
-
     const { name, value } = e.target;
-
     setFrom((prev) => ({
       ...prev,
       [name]: name === "rating" ? Number(value) : value,
     }));
   };
 
-  const submitFrom = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitFrom = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(from);
+    const toastId = toast.loading("Please wait...");
+    try {
+      const response = await submitFeedBack({
+        name: from.name,
+        email: from.email,
+        productId: from.productId,
+        review: from.review,
+        rating: from.rating,
+      });
+      
+      console.log(response);
+
+      if (response?.success) {
+        socket.emit("newFeedback", response.data); 
+        toast.success("Feedback submitted!");
+      }
+    } catch (err) {
+      toast.error("Error while submit feedback");
+    }
+    toast.dismiss(toastId);
+
+    setFrom({
+      productId: "",
+      name: " ",
+      email: " ",
+      rating: 0,
+      review: "",
+    });
   };
 
   console.log("formData - ", from);
-
-  console;
 
   return (
     <div className="flex justify-center items-center h-screen max-w-[540px] mx-auto">
@@ -97,6 +123,7 @@ export const FeedbackFrom = () => {
               name="name"
             />
           </div>
+
           <div>
             <label
               htmlFor="email"
@@ -121,7 +148,7 @@ export const FeedbackFrom = () => {
             htmlFor="productId"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Select an option
+            Select Product
           </label>
 
           <select
@@ -129,7 +156,7 @@ export const FeedbackFrom = () => {
             value={from.productId}
             name="productId"
             onChange={handleChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 capitalize"
           >
             {product.map((product) => (
               <option key={product.id} value={product.id}>
@@ -199,7 +226,7 @@ export const FeedbackFrom = () => {
             placeholder="Write your thoughts here..."
             onChange={handleChange}
             value={from.review}
-            ></textarea>
+          ></textarea>
         </div>
 
         <button

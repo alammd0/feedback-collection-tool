@@ -7,7 +7,7 @@ const {
 } = AdminEndPoints
 
 
-export const login = async (email : string, password : string) => {
+export const loginAdmin = async (email : string, password : string) => {
     try{
         const response = await apiConnecter({
             method : "POST",
@@ -31,7 +31,7 @@ export const login = async (email : string, password : string) => {
     }
 }
 
-export const forgetPassword = async (email: string, newPassword: string, token: string) => {
+export const forgetPassword = async (email: string, newPassword: string) => {
     try{
 
         const response = await apiConnecter({
@@ -39,7 +39,6 @@ export const forgetPassword = async (email: string, newPassword: string, token: 
             url : FORGET_PASSWORD_API,
             data : {email, newPassword},
             headers: {
-                Authorization: `Bearer ${token}`,
             }
         })
 

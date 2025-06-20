@@ -35,10 +35,11 @@ export const submitFeedBack = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json({
-      success: false,
-      message: "Than you submit Feedback..",
-      data: submitFeedBack,
+      success: true,
+      message: "Thank you submit Feedback..",
+      data: submitFeedbackData,
     });
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -65,6 +66,7 @@ export const getAllFeedback = async (req: Request, res: Response) => {
       message: "All feedback",
       data: allFeedBack,
     });
+
   } catch (error) {
     console.log(error);
     return res.status(504).json({

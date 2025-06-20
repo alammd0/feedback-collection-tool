@@ -25,20 +25,26 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/feedback", feedbackRoutes);
 
-
 io.on("connection", (socket) => {
   console.log("A user connected: ", socket.id);
 
+  socket.on("newFeedback", (data) => {
+    console.log("New feedback received via socket:", data);
+
+    io.emit("feedbackUpdate", data);
+  });
+
   socket.on("disconnect", () => {
-    console.log("A user disconnected: ", socket.id);
+    console.log("User disconnected:", socket.id);
   });
 });
 
-export { io }
+export { io };
+
 
 app.get("/", (req, res) => {
-  res.send(`<h1>App Successfully Published </h1>`)
-})
+  res.send(`<h1>App Successfully Published </h1>`);
+});
 
 // Start server
 const PORT = process.env.PORT || 4000;

@@ -3,11 +3,13 @@ import "./index.css";
 import App from "./App.tsx";
 import { AppProviders } from "./context/AppProviders.tsx";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")!).render(
-  <AppProviders>
-    <BrowserRouter>
+  <BrowserRouter>
+    <AppProviders>
       <App />
-    </BrowserRouter>
-  </AppProviders>
+      <ToastContainer />
+    </AppProviders>
+  </BrowserRouter>
 );

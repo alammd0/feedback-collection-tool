@@ -4,10 +4,8 @@ import type { ReactNode } from "react";
 
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
-    <AuthProvider>
-      <SocketProvider>
-        {children}
-      </SocketProvider>
-    </AuthProvider>
+    <SocketProvider>
+      <AuthProvider>{children}</AuthProvider>
+    </SocketProvider>
   );
 };
