@@ -38,7 +38,7 @@ export const AuthPage = ({ type }: AuthPageProps) => {
           const token = response.data?.token;
           login(response.data, token);
           toast.success("User Successfully Login");
-          navigate("/AdminPage");
+          navigate("/admin-page");
         } else {
           toast.error("Email or password wrong");
         }

@@ -3,6 +3,7 @@ import { NavbarComponets } from "./component/Navbar";
 import { FeedbackFrom } from "./page/FeedbackFrom";
 import { LoginPage } from "./page/login";
 import { ForgetPasswordPage } from "./page/ForgePassword";
+import FeedbackTabs from "./page/TabwiseFeedback";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<FeedbackFrom />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/forget-password" element={<ForgetPasswordPage />}></Route>
+          <Route path="/admin-page" element = {<FeedbackTabs/>} />
         </Routes>
       </main>
     </div>

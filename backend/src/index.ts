@@ -29,8 +29,6 @@ io.on("connection", (socket) => {
   console.log("A user connected: ", socket.id);
 
   socket.on("newFeedback", (data) => {
-    console.log("New feedback received via socket:", data);
-
     io.emit("feedbackUpdate", data);
   });
 

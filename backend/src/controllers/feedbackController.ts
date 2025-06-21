@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../utils/db";
+import { io } from "..";
 
 const submitFromSchema = z.object({
   productId: z.string(),
@@ -9,6 +10,7 @@ const submitFromSchema = z.object({
   review: z.string(),
   rating: z.number(),
 });
+
 
 // submit feedback
 export const submitFeedBack = async (req: Request, res: Response) => {
@@ -34,6 +36,9 @@ export const submitFeedBack = async (req: Request, res: Response) => {
       },
     });
 
+     // ✅ Emit after successful DB save
+    io.emit("newFeedback", submitFeedbackData);
+
     return res.status(200).json({
       success: true,
       message: "Thank you submit Feedback..",
@@ -48,6 +53,7 @@ export const submitFeedBack = async (req: Request, res: Response) => {
     });
   }
 };
+
 
 // get-all feedback
 export const getAllFeedback = async (req: Request, res: Response) => {
@@ -79,6 +85,7 @@ export const getAllFeedback = async (req: Request, res: Response) => {
 // get avg and rating count means (stats feedback...)
 export const getFeedbackStats = async (req: Request, res: Response) => {
   try {
+
     const stats = await prisma.feedback.groupBy({
       by: ["productId"],
       _avg: {
@@ -115,6 +122,7 @@ export const getFeedbackStats = async (req: Request, res: Response) => {
       message: "Feedback stats fetched",
       data: avgRating,
     });
+
   } catch (err) {
     console.log(err);
     return res.status(503).json({

@@ -79,11 +79,11 @@ export const FeedbackFrom = () => {
         review: from.review,
         rating: from.rating,
       });
-      
+
       console.log(response);
 
       if (response?.success) {
-        socket.emit("newFeedback", response.data); 
+        socket.emit("newFeedback", response.data);
         toast.success("Feedback submitted!");
       }
     } catch (err) {
@@ -100,7 +100,13 @@ export const FeedbackFrom = () => {
     });
   };
 
-  console.log("formData - ", from);
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <span className="loader"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center h-screen max-w-[540px] mx-auto">
@@ -186,6 +192,7 @@ export const FeedbackFrom = () => {
               className="w-full flex gap-10 pl-6"
               value={from.rating}
               onChange={(event, newValue) => {
+                event.preventDefault();
                 if (newValue !== null) {
                   setFrom((prev) => ({
                     ...prev,

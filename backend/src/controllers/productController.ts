@@ -48,6 +48,7 @@ export const createProduct = async (req: Request, res: Response) => {
       message: "Product created successfully.",
       data: newProduct,
     });
+    
   } catch (error) {
     console.error(error);
     return res.status(500).json({
